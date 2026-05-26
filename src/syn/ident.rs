@@ -34,7 +34,7 @@ pub fn get_idents_from_expr<'a>(expr: &'a syn::Expr) -> Vec<&'a syn::Ident> {
     idents
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "syn"))]
 mod ident_tests {
     use super::*;
     use proc_macro2::TokenStream;

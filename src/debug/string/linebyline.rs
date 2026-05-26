@@ -24,8 +24,7 @@ impl DebugOutLineByLine for String {
     }
 }
 
-#[cfg(test)]
-#[cfg(feature = "debug-out-lbl")]
+#[cfg(all(test, feature = "debug-out-lbl"))]
 mod debug_out_lbl_tests {
     use super::*;
     use env_logger::try_init;
@@ -46,4 +45,3 @@ mod debug_out_lbl_tests {
         s.debug(Some("A prefix"));
     }
 }
-
