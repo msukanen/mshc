@@ -1,6 +1,8 @@
 //! Proc-macro stuff.
 
-use syn::{Data, DeriveInput};
+use proc_macro::TokenStream;
+use quote::quote;
+use syn::{Data, DeriveInput, parse_macro_input};
 
 /// Required field, either from input.data or input.data.fields
 macro_rules! req_field {
@@ -42,4 +44,20 @@ fn get_struct_fields(input: &DeriveInput) -> &syn::FieldsNamed {
 
         _ => unimplemented!("Only structs supported.")
     }
+}
+
+/// Derive [Named] trait.
+#[proc_macro_derive(Named)]
+pub fn mshc_derive_named(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let name = &input.ident;
+    let fields = get_struct_fields(&input);
+    let name_f = req_field!(named fields, "name");
+    TokenStream::from(quote! {
+        impl mshc::named::Named for #name {
+            fn name<'a>(&'a self) -> &'a str {
+                &self.#name_f
+            }
+        }
+    })
 }
