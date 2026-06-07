@@ -1,0 +1,12 @@
+[package]
+name = "mshc-core"
+version = "0.1.0"
+edition = "2024"
+authors = ["Markku Sukanen <markku.sukanen@gmail.com>"]
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+mshc-derive = { path = "../mshc-derive", optional = true }
+
+[features]
+derive = ["mshc-derive"]

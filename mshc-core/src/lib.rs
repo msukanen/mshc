@@ -1,0 +1,3 @@
+//! MSHC-Core …
+
+pub mod named;
