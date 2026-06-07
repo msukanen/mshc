@@ -1,4 +1,4 @@
-# msuk-helper-collection
+# MSHC — A Helper Collection
 
 A collection of things.
 
