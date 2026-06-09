@@ -61,3 +61,20 @@ pub fn mshc_derive_named(input: TokenStream) -> TokenStream {
         }
     })
 }
+
+/// Derive [NamedMut] trait.
+#[proc_macro_derive(NamedMut)]
+pub fn mshc_derive_named_mut(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let name = &input.ident;
+    let fields = get_struct_fields(&input);
+    let name_f = req_field!(named fields, "name");
+    TokenStream::from(quote! {
+        impl mshc::named::NamedMut for #name {
+            fn set_name(&mut self, name: &str) -> &mut Self {
+                self.#name_f = name.into();
+                self
+            }
+        }
+    })
+}
