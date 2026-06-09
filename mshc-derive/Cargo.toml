@@ -3,6 +3,8 @@ name = "mshc-derive"
 version = "0.1.0"
 edition = "2024"
 authors = ["Markku Sukanen <markku.sukanen@gmail.com>"]
+license = "MIT OR Apache-2.0"
+description = "proc-macros for mshc"
 
 [dependencies]
 proc-macro2 = "1.0.106"
