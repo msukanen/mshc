@@ -39,7 +39,11 @@ pub fn pm_get_struct_fields(input: &DeriveInput) -> &syn::FieldsNamed {
     }
 }
 
-pub fn pm_gen_container_match(data: &DataEnum, method: &Ident, num_arg: u32) -> Vec<proc_macro2::TokenStream> {
+pub fn pm_gen_container_match_method_to_field(data: &DataEnum, method: &Ident, num_arg: u32) -> Vec<proc_macro2::TokenStream> {
+    pm_gen_container_match(data, method, method, num_arg)
+}
+
+pub fn pm_gen_container_match(data: &DataEnum, field: &Ident, method: &Ident, num_arg: u32) -> Vec<proc_macro2::TokenStream> {
     data.variants.iter().map(|variant| {
         let arg = match num_arg {
             0 => quote!(),
@@ -58,7 +62,7 @@ pub fn pm_gen_container_match(data: &DataEnum, method: &Ident, num_arg: u32) -> 
 
             Fields::Named(_) => {
                 quote! {
-                    Self::#var_ident { loot, ..} => loot.#method(#arg)
+                    Self::#var_ident { #field, ..} => #field.#method(#arg)
                 }
             }
 
