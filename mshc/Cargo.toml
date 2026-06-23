@@ -14,3 +14,6 @@ syn = "2.0.118"
 
 [features]
 derive = ["dep:mshc-derive"]
+
+[badges]
+maintenance = { status = "experimental" }
