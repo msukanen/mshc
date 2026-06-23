@@ -75,10 +75,10 @@ pub fn pm_gen_container_match(data: &DataEnum, field: &Ident, method: &Ident, nu
 macro_rules! get_tagged_ident {
     ($data:ident, $tag:literal, $name:literal) => {
         $data.fields.iter().find(|f| {
-            f.attrs.iter().any(|attr| is_tagged_attr(attr, $tag, $name)) ||
+            f.attrs.iter().any(|attr| $crate::pm_is_tagged_attr(attr, $tag, $name)) ||
             f.ident.as_ref().map_or(false, |i| i == $name)
         })  .map(|f| f.ident.as_ref().unwrap())
-            .expect(&format!("Field '{}' not found in #name", $name))
+            .expect(&format!("Field/tag '{}' not found", $name))
     };
 }
 
@@ -88,14 +88,14 @@ macro_rules! req_field {
         $data.named.iter().find(|f| {
             f.ident.as_ref().map_or(false, |i| i == $field)
         })  .map(|f| f.ident.as_ref().unwrap())
-            .expect(&format!("No '{}' field found in #name", $field))
+            .expect(&format!("No '{}' field found in struct layout", $field))
     };
 
     ($data:ident, $field:literal) => {
         $data.fields.iter().find(|f| {
             f.ident.as_ref().map_or(false, |i| i == $field)
         })  .map(|f| f.ident.as_ref().unwrap())
-            .expect(&format!("No '{}' field found in #name", $field))
+            .expect(&format!("No '{}' field found in struct layout", $field))
     };
 }
 
