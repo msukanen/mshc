@@ -1,9 +1,11 @@
 //! MSHC-Core …
 #[cfg(feature = "derive")]
 pub use mshc_derive::*;
+pub use mshc_macro_shared::*;
 use quote::quote;
 use syn::{Attribute, Data, DataEnum, DeriveInput, Fields, Ident};
 pub mod named;
+
 
 /// # Proc-macros
 /// 
@@ -113,37 +115,5 @@ macro_rules! get_tagged_ident {
             f.ident.as_ref().map_or(false, |i| i == $name)
         })  .map(|f| f.ident.as_ref().unwrap())
             .expect(&format!("Field/tag '{}' not found", $name))
-    };
-}
-
-#[macro_export]
-macro_rules! req_field {
-    (named $data:ident, $field:literal) => {
-        $data.named.iter().find(|f| {
-            f.ident.as_ref().map_or(false, |i| i == $field)
-        })  .map(|f| f.ident.as_ref().unwrap())
-            .expect(&format!("No '{}' field found in struct layout", $field))
-    };
-
-    ($data:ident, $field:literal) => {
-        $data.fields.iter().find(|f| {
-            f.ident.as_ref().map_or(false, |i| i == $field)
-        })  .map(|f| f.ident.as_ref().unwrap())
-            .expect(&format!("No '{}' field found in struct layout", $field))
-    };
-}
-
-#[macro_export]
-macro_rules! maybe_field {
-    (named $data:ident, $field:expr) => {
-        $data.named.iter().find(|f| {
-            f.ident.as_ref().map_or(false, |i| i == $field)
-        })  .map(|f| f.ident.as_ref().unwrap())
-    };
-
-    ($data:ident, $field:literal) => {
-        $data.fields.iter().find(|f| {
-            f.ident.as_ref().map_or(false, |i| i == $field)
-        })  .map(|f| f.ident.as_ref().unwrap())
     };
 }

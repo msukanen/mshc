@@ -1,0 +1,9 @@
+[package]
+name = "mshc-macro-shared"
+version = "0.1.0"
+edition = "2024"
+description = "Shared macro source for 'mshc' and 'mshc-derive'"
+authors = ["Markku Sukanen <markku.sukanen@gmail.com>"]
+license = "MIT OR Apache-2.0"
+
+[dependencies]

@@ -8,6 +8,7 @@ description = "A tiny utility library…"
 
 [dependencies]
 mshc-derive = { path = "../mshc-derive", optional = true, version = "0.1.0" }
+mshc-macro-shared = { path = "../mshc-macro-shared" }
 proc-macro2 = "1.0.106"
 quote = "1.0.46"
 syn = "2.0.118"
