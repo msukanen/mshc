@@ -71,7 +71,12 @@ pub fn pm_gen_container_match(data: &DataEnum, field: &Ident, method: &Ident, nu
     }).collect()
 }
 
-pub fn pm_gen_container_match_method_or_direct_field(data: &DataEnum, field: &Ident, method: &Ident, num_arg: u32) -> Vec<proc_macro2::TokenStream> {
+pub fn pm_gen_container_match_as_method_or_direct_bool_field(
+    data: &DataEnum,
+    field: &Ident,
+    method: &Ident,
+    num_arg: u32
+) -> Vec<proc_macro2::TokenStream> {
     data.variants.iter().map(|variant| {
         let arg = match num_arg {
             0 => quote!(),
@@ -94,7 +99,7 @@ pub fn pm_gen_container_match_method_or_direct_field(data: &DataEnum, field: &Id
                 }
             }
 
-            Fields::Unit => { quote! { Self::#var_ident => panic!("No… Units are too weird stuff! Derive manually.") }}
+            Fields::Unit => { quote! { Self::#var_ident => false }}
         }
     }).collect()
 }
