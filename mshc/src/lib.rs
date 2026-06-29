@@ -93,10 +93,10 @@ pub fn pm_gen_container_match_as_method_or_direct_bool_field(
                 }
             }
 
-            Fields::Named(_) => {
-                quote! {
-                    Self::#var_ident { #field, ..} => *#field,
-                    _ => false
+            Fields::Named(named_fs) => {
+                match maybe_field!(named named_fs, field) {
+                    Some(fld) => quote! { Self::#var_ident { #fld, ..} => *#fld },
+                    _ => quote! { Self::#var_ident => false }
                 }
             }
 
@@ -135,7 +135,7 @@ macro_rules! req_field {
 
 #[macro_export]
 macro_rules! maybe_field {
-    (named $data:ident, $field:literal) => {
+    (named $data:ident, $field:expr) => {
         $data.named.iter().find(|f| {
             f.ident.as_ref().map_or(false, |i| i == $field)
         })  .map(|f| f.ident.as_ref().unwrap())

@@ -1,6 +1,6 @@
 [package]
 name = "mshc"
-version = "0.1.2-f"
+version = "0.1.2-g"
 edition = "2024"
 authors = ["Markku Sukanen <markku.sukanen@gmail.com>"]
 license = "MIT OR Apache-2.0"
