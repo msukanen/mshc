@@ -95,7 +95,7 @@ pub fn pm_gen_container_match_as_method_or_direct_bool_field(
 
             Fields::Named(_) => {
                 quote! {
-                    Self::#var_ident { #field, ..} => #field,
+                    Self::#var_ident { #field, ..} => *#field,
                     _ => false
                 }
             }
