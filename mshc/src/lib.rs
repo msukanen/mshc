@@ -96,7 +96,7 @@ pub fn pm_gen_container_match_as_method_or_direct_bool_field(
             Fields::Named(named_fs) => {
                 match maybe_field!(named named_fs, field) {
                     Some(fld) => quote! { Self::#var_ident { #fld, ..} => *#fld },
-                    _ => quote! { Self::#var_ident => false }
+                    _ => quote! { Self::#var_ident {..} => false }
                 }
             }
 
