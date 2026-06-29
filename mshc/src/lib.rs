@@ -66,7 +66,35 @@ pub fn pm_gen_container_match(data: &DataEnum, field: &Ident, method: &Ident, nu
                 }
             }
 
-            Fields::Unit => { quote! { Self::#var_ident => panic!("No Storage for weird stuff!") }}
+            Fields::Unit => { quote! { Self::#var_ident => panic!("No… Units are too weird stuff! Derive manually.") }}
+        }
+    }).collect()
+}
+
+pub fn pm_gen_container_match_method_or_direct_field(data: &DataEnum, field: &Ident, method: &Ident, num_arg: u32) -> Vec<proc_macro2::TokenStream> {
+    data.variants.iter().map(|variant| {
+        let arg = match num_arg {
+            0 => quote!(),
+            1 => quote!(a),
+            2 => quote!(a,b),
+            3 => quote!(a,b,c),
+            _ => quote!(a,b,c,d),
+        };
+        let var_ident = &variant.ident;
+        match &variant.fields {
+            Fields::Unnamed(_) => {
+                quote! {
+                    Self::#var_ident(inner) => inner.#method(#arg)
+                }
+            }
+
+            Fields::Named(_) => {
+                quote! {
+                    Self::#var_ident { #field, ..} => #field
+                }
+            }
+
+            Fields::Unit => { quote! { Self::#var_ident => panic!("No… Units are too weird stuff! Derive manually.") }}
         }
     }).collect()
 }
