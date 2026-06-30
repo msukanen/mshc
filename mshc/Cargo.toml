@@ -5,6 +5,7 @@ edition = "2024"
 authors = ["Markku Sukanen <markku.sukanen@gmail.com>"]
 license = "MIT OR Apache-2.0"
 description = "A tiny utility library…"
+repository = "https://github.com/msukanen/mshc.git"
 
 [dependencies]
 mshc-derive = { path = "../mshc-derive", optional = true, version = "0.1.1" }
