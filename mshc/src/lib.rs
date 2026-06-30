@@ -41,10 +41,20 @@ pub fn pm_get_struct_fields(input: &DeriveInput) -> &syn::FieldsNamed {
     }
 }
 
-pub fn pm_gen_container_match_method_to_field(data: &DataEnum, method: &Ident, num_arg: u32) -> Vec<proc_macro2::TokenStream> {
-    pm_gen_container_match(data, method, method, num_arg)
-}
-
+/// # Proc-macros; `struct`-only
+/// 
+/// Generates pattern-matching arms to delegate a `method` call into enum variant payloads.
+/// 
+/// Automatically handles:
+/// - **Tuple Variants (`Fields::Unnamed`)**: Extracts `inner` and forwards the call.
+/// - **Struct Variants (`Fields::Named`)**: Destructures the specified `field` and forwards the call.
+/// - **Unit Variants**: Injects a explicit runtime panic block.
+/// 
+/// # Arguments
+/// * `data` - The parsed enum structural metadata.
+/// * `field` - The target field identifier to capture when dealing with named struct variants.
+/// * `method` - The name of the method to invoke on the payload.
+/// * `num_arg` - Count of proxy parameters (`0..=4`) to generate and forward into the method signature.
 pub fn pm_gen_container_match(data: &DataEnum, field: &Ident, method: &Ident, num_arg: u32) -> Vec<proc_macro2::TokenStream> {
     data.variants.iter().map(|variant| {
         let arg = match num_arg {
@@ -73,6 +83,18 @@ pub fn pm_gen_container_match(data: &DataEnum, field: &Ident, method: &Ident, nu
     }).collect()
 }
 
+/// # Proc-macros
+/// 
+/// A (in)convenience variant of `pm_gen_container_match` for cases where `field` and `method` are 1:1 in their naming.
+/// 
+pub fn pm_gen_container_match_method_to_field(data: &DataEnum, method: &Ident, num_arg: u32) -> Vec<proc_macro2::TokenStream> {
+    pm_gen_container_match(data, method, method, num_arg)
+}
+
+/// # Proc-macros
+/// 
+/// Mostly as per `pm_gen_container_match` but with a `bool` twist to it…
+/// 
 pub fn pm_gen_container_match_as_method_or_direct_bool_field(
     data: &DataEnum,
     field: &Ident,
