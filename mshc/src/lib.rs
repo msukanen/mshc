@@ -5,6 +5,7 @@ pub use mshc_macro_shared::*;
 use quote::quote;
 use syn::{Attribute, Data, DataEnum, DeriveInput, Fields, Ident};
 pub mod named;
+pub mod grade;
 
 
 /// # Proc-macros

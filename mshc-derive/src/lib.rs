@@ -47,3 +47,35 @@ pub fn mshc_derive_named_mut(input: TokenStream) -> TokenStream {
         }
     })
 }
+
+/// Derive [Graded] trait.
+#[proc_macro_derive(Graded)]
+pub fn mshc_derive_graded(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let name = &input.ident;
+    let fields = get_struct_fields(&input);
+    let grade_f = req_field!(named fields, "grade");
+    TokenStream::from(quote! {
+        impl mshc::grade::Graded for #name {
+            fn grade(&self) -> mshc::grade::Grade {
+                self.#grade_f
+            }
+        }
+    })
+}
+
+/// Derive [GradeMut] trait.
+#[proc_macro_derive(GradeMut)]
+pub fn mshc_derive_grademut(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let name = &input.ident;
+    let fields = get_struct_fields(&input);
+    let grade_f = req_field!(named fields, "grade");
+    TokenStream::from(quote! {
+        impl mshc::grade::GradeMut for #name {
+            fn set_grade(&mut self, grade: Grade) {
+                self.#grade_f = grade
+            }
+        }
+    })
+}
