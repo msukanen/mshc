@@ -2,6 +2,8 @@
 //! 
 //! What a [Grade] *means* depends on the things' context itself.
 //! 
+use std::ops::{Add, Sub};
+
 use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Grade {
@@ -41,6 +43,38 @@ impl From<Grade> for u8 {
     }
 }
 
+impl Grade {
+    #[inline]
+    pub fn next(&self) -> Self {
+        use Grade::*;
+        match self {
+            F => E,
+            E => D,
+            D => C,
+            C => B,
+            B => A,
+            A => S,
+            S => SS,
+            _ => SSS,
+        }
+    }
+
+    #[inline]
+    pub fn prev(&self) -> Self {
+        use Grade::*;
+        match self {
+            F|E => F,
+            D => E,
+            C => D,
+            B => C,
+            A => B,
+            S => A,
+            SS => S,
+            SSS => SS,
+        }
+    }
+}
+
 impl From<Grade> for u32 {
     #[inline]
     fn from(grade: Grade) -> Self {
@@ -54,4 +88,30 @@ pub trait Graded {
 
 pub trait GradeMut {
     fn set_grade(&mut self, grade: Grade);
+}
+
+impl Add<i32> for Grade {
+    type Output = Grade;
+    fn add(self, rhs: i32) -> Self::Output {
+        let rev = rhs < 0;
+        let mut res = self;
+        for _ in 0..rhs.abs() {
+            if rev { res = res.prev() }
+            else   { res = res.next() }
+        }
+        res
+    }
+}
+
+impl Sub<i32> for Grade {
+    type Output = Grade;
+    fn sub(self, rhs: i32) -> Self::Output {
+        let rev = rhs < 0;
+        let mut res = self;
+        for _ in 0..rhs.abs() {
+            if rev { res = res.next() }
+            else   { res = res.prev() }
+        }
+        res
+    }
 }
