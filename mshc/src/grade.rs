@@ -45,7 +45,7 @@ impl From<Grade> for u8 {
 
 impl Grade {
     #[inline]
-    pub fn next(&self) -> Self {
+    pub const fn next(&self) -> Self {
         use Grade::*;
         match self {
             F => E,
@@ -60,7 +60,7 @@ impl Grade {
     }
 
     #[inline]
-    pub fn prev(&self) -> Self {
+    pub const fn prev(&self) -> Self {
         use Grade::*;
         match self {
             F|E => F,
