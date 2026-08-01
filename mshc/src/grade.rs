@@ -81,6 +81,9 @@ impl Grade {
             SSS => SS,
         }
     }
+
+    #[inline(always)] pub const fn floor() -> Self { Self::F }
+    #[inline(always)] pub const fn ceil() -> Self { Self::SSS }
 }
 
 macro_rules! impl_grade_stuff {
