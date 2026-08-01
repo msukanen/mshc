@@ -43,6 +43,14 @@ impl From<Grade> for u8 {
     }
 }
 
+impl From<Grade> for i8 {
+    #[inline]
+    fn from(grade: Grade) -> Self {
+        // [Grade] will safely fit in `i8`.
+        u8::from(grade) as i8
+    }
+}
+
 impl Grade {
     #[inline]
     pub const fn next(&self) -> Self {
@@ -75,12 +83,20 @@ impl Grade {
     }
 }
 
-impl From<Grade> for u32 {
-    #[inline]
-    fn from(grade: Grade) -> Self {
-        u8::from(grade) as u32
-    }
+macro_rules! impl_grade_stuff {
+    ([$($t:tt),+]) => { paste::paste! {
+        $(
+            impl From<Grade> for [<u $t>] {
+                #[inline]
+                fn from(grade: Grade) -> Self {
+                    u8::from(grade) as [<u $t>]
+                }
+            }
+        )+
+    }};
 }
+// baseline u8/i8 have been defined separately
+impl_grade_stuff!([16,32,64,128,size]);
 
 pub trait Graded {
     fn grade(&self) -> Grade;
