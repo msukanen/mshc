@@ -6,6 +6,7 @@ use quote::quote;
 use syn::{Attribute, Data, DataEnum, DeriveInput, Fields, Ident};
 pub mod named;
 pub mod grade;
+pub mod gradea2e;
 
 
 /// # Proc-macros
