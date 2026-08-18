@@ -5,9 +5,11 @@ pub use mshc_macro_shared::*;
 use quote::quote;
 use syn::{Attribute, Data, DataEnum, DeriveInput, Fields, Ident};
 pub mod named;
-pub mod grade;
-pub mod gradea2e;
-
+mod graded;
+#[cfg(all(feature = "grade-f-to-sss", not(feature = "grade-a2e")))]
+pub use graded::f_to_sss as grade;
+#[cfg(all(feature = "grade-a2e", not(feature = "grade-f-to-sss")))]
+pub use graded::a2e as grade;
 
 /// # Proc-macros
 /// 
