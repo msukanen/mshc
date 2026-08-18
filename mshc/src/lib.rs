@@ -1,15 +1,13 @@
 //! MSHC-Core …
 #[cfg(feature = "derive")]
 pub use mshc_derive::*;
+use mshc_macro_shared::structs::get_struct_fields;
 pub use mshc_macro_shared::*;
 use quote::quote;
-use syn::{Attribute, Data, DataEnum, DeriveInput, Fields, Ident};
+use syn::{Attribute, DataEnum, DeriveInput, Fields, Ident};
 pub mod named;
 mod graded;
-#[cfg(all(feature = "grade-f-to-sss", not(feature = "grade-a2e")))]
-pub use graded::f_to_sss as grade;
-#[cfg(all(feature = "grade-a2e", not(feature = "grade-f-to-sss")))]
-pub use graded::a2e as grade;
+pub use graded::*;
 
 /// # Proc-macros
 /// 
@@ -34,15 +32,9 @@ pub fn pm_is_tagged_attr(attr: &Attribute, what: &str, goal: &str) -> bool {
 /// 
 /// Get named `fields` of the given `input`.
 /// 
+#[inline(always)]
 pub fn pm_get_struct_fields(input: &DeriveInput) -> &syn::FieldsNamed {
-    match &input.data {
-        Data::Struct(data) => match &data.fields {
-            syn::Fields::Named(fields) => fields,
-            _ => unimplemented!("Only named fields supported.")
-        },
-
-        _ => unimplemented!("Only structs supported.")
-    }
+    get_struct_fields(input)
 }
 
 /// # Proc-macros; `struct`-only

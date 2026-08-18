@@ -1,16 +1,21 @@
 [package]
 name = "mshc-derive"
-version = "0.1.9"
+version = "0.1.11"
 edition = "2024"
 authors = ["Markku Sukanen <markku.sukanen@gmail.com>"]
 license = "MIT OR Apache-2.0"
 description = "proc-macros for mshc"
 
 [dependencies]
-proc-macro2 = "1.0.106"
-quote = "1.0.45"
-syn = "2.0.117"
+proc-macro2 = "1.0.107"
+quote = "1.0.47"
+syn = "3.0.3"
 mshc-macro-shared = { path = "../mshc-macro-shared", version = "0.1.1" }
 
 [lib]
 proc-macro = true
+
+[features]
+default = []
+grade-f-to-sss = []
+grade-a2e = []

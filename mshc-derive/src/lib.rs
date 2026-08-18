@@ -1,19 +1,8 @@
 //! Proc-macro stuff.
-use mshc_macro_shared::*;
+use mshc_macro_shared::{structs::get_struct_fields, *};
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{Data, DeriveInput, parse_macro_input};
-
-fn get_struct_fields(input: &DeriveInput) -> &syn::FieldsNamed {
-    match &input.data {
-        Data::Struct(data) => match &data.fields {
-            syn::Fields::Named(fields) => fields,
-            _ => unimplemented!("Only named fields supported.")
-        },
-
-        _ => unimplemented!("Only structs supported.")
-    }
-}
+use syn::{DeriveInput, parse_macro_input};
 
 /// Derive [Named] trait.
 #[proc_macro_derive(Named)]
@@ -67,38 +56,6 @@ pub fn mshc_derive_graded(input: TokenStream) -> TokenStream {
 /// Derive [GradeMut] trait.
 #[proc_macro_derive(GradeMut)]
 pub fn mshc_derive_grademut(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as DeriveInput);
-    let name = &input.ident;
-    let fields = get_struct_fields(&input);
-    let grade_f = req_field!(named fields, "grade");
-    TokenStream::from(quote! {
-        impl mshc::grade::GradeMut for #name {
-            fn set_grade(&mut self, grade: Grade) {
-                self.#grade_f = grade
-            }
-        }
-    })
-}
-
-/// Derive [Graded] trait.
-#[proc_macro_derive(GradedA2E)]
-pub fn mshc_derive_graded_a2e(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as DeriveInput);
-    let name = &input.ident;
-    let fields = get_struct_fields(&input);
-    let grade_f = req_field!(named fields, "grade");
-    TokenStream::from(quote! {
-        impl mshc::grade::Graded for #name {
-            fn grade(&self) -> mshc::grade::Grade {
-                self.#grade_f
-            }
-        }
-    })
-}
-
-/// Derive [GradeMut] trait.
-#[proc_macro_derive(GradeA2EMut)]
-pub fn mshc_derive_gradea2e_mut(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let name = &input.ident;
     let fields = get_struct_fields(&input);
