@@ -7,4 +7,4 @@ authors = ["Markku Sukanen <markku.sukanen@gmail.com>"]
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-syn = "3.0.3"
+syn = "3.0.5"

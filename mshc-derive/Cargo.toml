@@ -9,7 +9,7 @@ description = "proc-macros for mshc"
 [dependencies]
 proc-macro2 = "1.0.107"
 quote = "1.0.47"
-syn = "3.0.3"
+syn = "3.0.5"
 mshc-macro-shared = { path = "../mshc-macro-shared", version = "0.1.1" }
 
 [lib]
