@@ -1,12 +1,12 @@
 #[macro_export]
-macro_rules! maybe_field {
+macro_rules! maybe_ident {
     (named $data:ident, $field:expr) => {
         $data.named.iter().find(|f| {
             f.ident.as_ref().map_or(false, |i| i == $field)
         })  .map(|f| f.ident.as_ref().unwrap())
     };
 
-    ($data:ident, $field:literal) => {
+    ($data:ident, $field:expr) => {
         $data.fields.iter().find(|f| {
             f.ident.as_ref().map_or(false, |i| i == $field)
         })  .map(|f| f.ident.as_ref().unwrap())
@@ -14,7 +14,7 @@ macro_rules! maybe_field {
 }
 
 #[macro_export]
-macro_rules! maybe_field2 {
+macro_rules! maybe_field {
     (named $data:ident, $field:expr) => {
         $data.named.iter().find(|f| {
             f.ident.as_ref().map_or(false, |i| i == $field)

@@ -10,7 +10,7 @@ pub fn mshc_derive_named(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let name = &input.ident;
     let fields = get_struct_fields(&input);
-    let name_f = req_field!(named fields, "name");
+    let name_f = req_ident!(named fields, "name");
     TokenStream::from(quote! {
         impl mshc::named::Named for #name {
             fn name<'a>(&'a self) -> &'a str {
@@ -26,7 +26,7 @@ pub fn mshc_derive_named_mut(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let name = &input.ident;
     let fields = get_struct_fields(&input);
-    let name_f = req_field!(named fields, "name");
+    let name_f = req_ident!(named fields, "name");
     TokenStream::from(quote! {
         impl mshc::named::NamedMut for #name {
             fn set_name(&mut self, name: &str) -> &mut Self {
@@ -43,7 +43,7 @@ pub fn mshc_derive_graded(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let name = &input.ident;
     let fields = get_struct_fields(&input);
-    let grade_f = req_field!(named fields, "grade");
+    let grade_f = req_ident!(named fields, "grade");
     TokenStream::from(quote! {
         impl mshc::grade::Graded for #name {
             fn grade(&self) -> mshc::grade::Grade {
@@ -59,7 +59,7 @@ pub fn mshc_derive_grademut(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let name = &input.ident;
     let fields = get_struct_fields(&input);
-    let grade_f = req_field!(named fields, "grade");
+    let grade_f = req_ident!(named fields, "grade");
     TokenStream::from(quote! {
         impl mshc::grade::GradeMut for #name {
             fn set_grade(&mut self, grade: Grade) {
